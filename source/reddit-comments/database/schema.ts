@@ -1,4 +1,4 @@
-import { databaseName } from '../constants';
+import { databaseName } from '../constants/config';
 
 export interface ThreadData {
   id?: number;
@@ -41,6 +41,7 @@ export interface SettingsData {
   enableLogger: boolean;
   /** not persisted in db */
   resetDb?: ResetDbType;
+  markAllAsRead?: boolean;
 }
 export type SettingsDataKeys = keyof SettingsData;
 

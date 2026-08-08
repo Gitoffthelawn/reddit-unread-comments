@@ -1,46 +1,15 @@
-import { redditThreadUrlRegex, redditUrlRegex } from './constants';
+import { redditThreadUrlRegex, redditUrlRegex } from './constants/selectors';
 import { SettingsData, SettingsDataKeys } from './database/schema';
+import { getAllComments } from './dom/highlight-common';
+import debounce from 'lodash.debounce';
 
 export type AnyFunction = (...args: any[]) => any;
 
-export const debounce = (func: AnyFunction, wait: number) => {
-  let timeout: NodeJS.Timeout;
-  let resolveFn: (() => void) | null = null;
+export const debounceLeading = (func: AnyFunction, wait: number) =>
+  debounce(func, wait, { leading: true, trailing: false });
 
-  const debouncedFunction: AnyFunction = function (...args: any[]) {
-    clearTimeout(timeout);
-
-    return new Promise<void>((resolve) => {
-      resolveFn = resolve;
-      timeout = setTimeout(async () => {
-        const result = func.apply(window, args);
-
-        if (result instanceof Promise) {
-          await result;
-        }
-
-        if (resolveFn) {
-          resolveFn();
-          resolveFn = null;
-        }
-      }, wait);
-    });
-  };
-
-  return debouncedFunction;
-};
-
-export const delayExecution = async <T extends any[]>(
-  func: (...args: T) => Promise<void>,
-  wait: number,
-  ...args: T
-): Promise<void> =>
-  new Promise((resolve) => {
-    setTimeout(async () => {
-      await func(...args);
-      resolve();
-    }, wait);
-  });
+export const debounceTrailing = (func: AnyFunction, wait: number) =>
+  debounce(func, wait, { leading: false, trailing: true });
 
 export const isActiveTab = () => document.visibilityState === 'visible';
 
@@ -53,6 +22,24 @@ export const isRedditThreadWithHref = (): boolean => isRedditThread(location.hre
 export const isActiveTabAndRedditThread = (): boolean =>
   isActiveTab() && isRedditThreadWithHref();
 
+export const isActiveTabAndRedditThreadAndHasComments = () => {
+  const isActiveTabValue = isActiveTab();
+  const isRedditThread = isRedditThreadWithHref();
+
+  const commentElements = getAllComments();
+  const hasComments = commentElements.length > 0;
+
+  const result = {
+    isActiveTab: isActiveTabValue,
+    isRedditThread,
+    hasComments,
+    commentElements,
+    isOk: isActiveTabValue && isRedditThread && hasComments,
+  };
+
+  return result;
+};
+
 export const hasArrivedToRedditThread = (
   previousUrl: string,
   currentUrl: string
@@ -63,41 +50,6 @@ export const hasLeftRedditThread = (previousUrl: string, currentUrl: string): bo
 
 export const sizeInMBString = (sizeInBytes: number): string =>
   (sizeInBytes / (1024 * 1024)).toFixed(6);
-
-/** Sort comments by new. Unused.*/
-export const getSortByNewUrl = (url: string): string => {
-  if (!isRedditThread(url)) return url;
-
-  const urlObject = new URL(url);
-  const queryParams = new URLSearchParams(urlObject.search);
-
-  if (queryParams.has('sort')) {
-    if (queryParams.get('sort') === 'new') return url;
-
-    queryParams.set('sort', 'new');
-  } else {
-    queryParams.append('sort', 'new');
-  }
-
-  urlObject.search = queryParams.toString();
-
-  return urlObject.toString();
-};
-
-export const hasSortByNewQueryParam = (url: string): boolean => {
-  const urlObject = new URL(url);
-  const queryParams = new URLSearchParams(urlObject.search);
-
-  return queryParams.has('sort') && queryParams.get('sort') === 'new';
-};
-
-export const pickShallow = <T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> => {
-  const picked: Partial<Pick<T, K>> = {};
-  keys.forEach((key) => {
-    picked[key] = obj[key];
-  });
-  return picked as Pick<T, K>;
-};
 
 export const detectChanges = (object1: SettingsData, object2: SettingsData): string[] => {
   const changes: string[] = [];
@@ -117,3 +69,29 @@ export const wait = (milliseconds: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });
+
+export const getElapsedTime = (startTime: number) => {
+  const endTime = performance.now();
+  const elapsedTime = endTime - startTime;
+  return elapsedTime;
+};
+
+/** for debugging */
+export class MeasureTime {
+  private static startTimeInitial = 0;
+  private static startTime = MeasureTime.startTimeInitial;
+
+  static setStartTime(startTime: number) {
+    MeasureTime.startTime = startTime;
+  }
+
+  static getElapsedTime() {
+    if (MeasureTime.startTime === MeasureTime.startTimeInitial) {
+      throw new Error(`startTime not set, startTime: ${MeasureTime.startTime}`);
+    }
+
+    const endTime = performance.now();
+    const elapsedTime = endTime - MeasureTime.startTime;
+    return elapsedTime;
+  }
+}

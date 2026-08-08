@@ -4,11 +4,21 @@ Have you ever had to reread entire 200+ comments Reddit thread just to find a fe
 
 Chrome/Firefox extension for easier tracking of new comments on Reddit. Free, open source, privacy aware, runs completely client side without sending any data to any server.
 
+#### Update 2024
+
+Around January 2024. Reddit moved all users to the new design and made version `v0.0.4` outdated. In April 2024. I updated the extension to `1.1.1` to support the new design, and that is the only Reddit design that is supported (available on `www.reddit.com`).
+
+The screenshot bellow shows the new design, demo video shows deprecated design - all features are the same, it shouldn't be a problem.
+
+Version `1.1.1` also includes `Immediately` checkbox to mark the current thread as read manually.
+
 ## Screenshots
 
 ![Screenshot_1](/docs/screenshots/Screenshot_1.png)
 
 ## Demo
+
+[![Demo video](/docs/screenshots/Screenshot_youtube.png)](https://www.youtube.com/watch?v=dHw0pM3ZzqY)
 
 ## Features
 
@@ -39,23 +49,27 @@ Chrome/Firefox extension for easier tracking of new comments on Reddit. Free, op
 
 ### Install manually
 
-Go to release page [https://github.com/nemanjam/reddit-unread-comments/releases/tag/v0.0.3](https://github.com/nemanjam/reddit-unread-comments/releases/tag/v0.0.3) and download Firefox `.xpi` or Chrome `.zip`.
+Go to release page [https://github.com/nemanjam/reddit-unread-comments/releases/tag/1.1.1](https://github.com/nemanjam/reddit-unread-comments/releases/tag/1.1.1) and download Firefox `.xpi` or Chrome `.zip`.
 
 - **Firefox manual install:**
 
-  - In Firefox click `Settings` (three horizontal lines in the top-right corner), click `Extensions tab`, click `Gear` icon right from `Manage Your Extensions`, choose `Install Add-on From File...` from the menu and browse `reddit-unread-comments-v0.0.3-firefox.xpi` file which you can download from the release page.
+  - In Firefox click `Settings` (three horizontal lines in the top-right corner), click `Extensions tab`, click `Gear` icon right from `Manage Your Extensions`, choose `Install Add-on From File...` from the menu and browse `reddit-unread-comments-1.1.1-firefox.xpi` file which you can download from the release page.
 
-  - **Firefox `.xpi`:** [reddit-unread-comments-v0.0.3-firefox.xpi](https://github.com/nemanjam/reddit-unread-comments/releases/download/v0.0.3/reddit-unread-comments-v0.0.3-firefox.xpi)
+  - **Firefox `.xpi`:** [reddit-unread-comments-1.1.1-firefox.xpi](https://github.com/nemanjam/reddit-unread-comments/releases/download/1.1.1/reddit-unread-comments-1.1.1-firefox.xpi)
 
 - **Chrome manual install:**
 
-  - In Chrome navigate to `chrome://extensions/`, switch `Enable developer mode` to true, click `Load unpacked` and browse `reddit-unread-comments-v0.0.3-chrome.zip` file which you can download from the release page.
+  - In Chrome navigate to `chrome://extensions/`, switch `Enable developer mode` to true, click `Load unpacked` and browse `reddit-unread-comments-1.1.1-chrome.zip` file which you can download from the release page.
 
-  - **Chrome `.zip`:** [reddit-unread-comments-v0.0.3-chrome.zip](https://github.com/nemanjam/reddit-unread-comments/releases/download/v0.0.3/reddit-unread-comments-v0.0.3-chrome.zip)
+  - **Chrome `.zip`:** [reddit-unread-comments-1.1.1-chrome.zip](https://github.com/nemanjam/reddit-unread-comments/releases/download/1.1.1/reddit-unread-comments-1.1.1-chrome.zip)
 
 ## Usage
 
-**Note:** To use this extension **you must be logged in into your Reddit account** when visiting pages because Reddit has different HTML for signed in and not signed in users.
+#### Prerequisites:
+
+1. To use this extension **you must be logged in into your Reddit account** when visiting pages because Reddit has different HTML for signed in and not signed in users.
+2. It's meant **only for the main Reddit website `www.reddit.com`**, it won't work on old website `old.reddit.com` and new website `new.reddit.com`.
+3. To open the User Settings popup you must navigate to a Reddit thread.
 
 #### The Problem
 
@@ -165,7 +179,7 @@ Ref: Thread.threadId < Comment.threadId -- Thread:Comment 1:N
 Before any work please have a look at [Documentation](#documentation), and then open an issue in this repo to discuss with me about a feature you want to add. Some of the possible future tasks are:
 
 - `onScroll` in thread overlay fires before `onUrlChange` with less delay for DOM to load, causing overlay not to be detected and comment `timestampId` not to be found, exception is handled but still try to fix. The issue is documented here: [onScroll event fires before onUrlChange #1](https://github.com/nemanjam/reddit-unread-comments/issues/1)
-- Use IndexedDB wrapper library to reduce complexity and verbosity of the existing database code: [dexie/Dexie.js](https://github.com/dexie/Dexie.js) or [jakearchibald/idb](https://github.com/jakearchibald/idb).
+- Use IndexedDB wrapper library to reduce complexity and verbosity of the existing database code: [dexie/Dexie.js](https://github.com/dexie/Dexie.js), [jakearchibald/idb](https://github.com/jakearchibald/idb) or [jindalujjwal0720/leafstore](https://github.com/jindalujjwal0720/leafstore)
 - Add Github Action for a new tag and release.
 - The initial extension starter project [abhijithvijayan/web-extension-starter](https://github.com/abhijithvijayan/web-extension-starter) is outdated and requires updating.
 - Cleanup remaining exceptions from console (if any).
