@@ -20,7 +20,7 @@ const SectionLink: FC = () => {
           Reddit Unread Comments
         </Text>
         <Text as="label" size="1">
-          Version: 1.1.2
+          Version: 1.1.3
         </Text>
       </Flex>
     </Flex>

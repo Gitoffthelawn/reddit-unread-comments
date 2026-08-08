@@ -61,4 +61,5 @@ export const currentlySelectedItemSelector = '#comment-sort-button > span > span
 export const sortMenuClickSelector = '#comment-sort-button';
 
 // dropdown item new
-export const sortByNewMenuItemSelector = 'div[slot="dropdown-items"] span.text-14';
+export const sortByNewMenuItemSelector =
+  'div[slot="dropdown-items"] data[value="NEW"] span:first-of-type';
