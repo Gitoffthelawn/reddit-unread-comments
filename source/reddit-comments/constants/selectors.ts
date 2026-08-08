@@ -19,16 +19,19 @@ export const getCommentSelectorFromId = (commentId: string) =>
 export const getTimestampSelectorFromId = (commentId: string) => {
   const targetCommentSelector = getCommentSelectorFromId(commentId);
 
+  // ! HERE was broken selector
   // select direct child element first to exclude nested comments
-  const timestampSelector = `${targetCommentSelector} > div[slot="commentMeta"] time[datetime]`;
+  const timestampSelector = `${targetCommentSelector} > details > summary time[datetime]`;
   return timestampSelector;
 };
 
-// content
+// content - for visibility and highlight
 export const getContentSelectorFromId = (commentId: string) => {
   const targetCommentSelector = getCommentSelectorFromId(commentId);
 
-  const contentSelector = `${targetCommentSelector} > div[slot="comment"]`; // used in styles.scss too
+  // ! HERE was broken selector
+  // id="t1_p2f9i0y-comment-rtjson-content"
+  const contentSelector = `${targetCommentSelector} #${commentId}-comment-rtjson-content`; // used in styles.scss too
   return contentSelector;
 };
 

@@ -161,6 +161,8 @@ export const markAsRead = async (
 
     // since comments are now nested, select only content of the comment
     const commentContentElement = getCommentContentElement(commentElement);
+
+    // ! silent break here, better throw exception
     if (!commentContentElement) return;
 
     //! must use debounceTrailing

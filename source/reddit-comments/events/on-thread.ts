@@ -38,7 +38,7 @@ export const handleArrivedToRedditThread = async () => {
     const { isSuccess } = await retryAndWaitForCommentsToLoad();
     if (!isSuccess) return;
 
-    //! important, must select element AFTER sort
+    // ! important, must select element AFTER sort
     const { isOk, commentElements } = isActiveTabAndRedditThreadAndHasComments();
     if (!isOk) return;
 

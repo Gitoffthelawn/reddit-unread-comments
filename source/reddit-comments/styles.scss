@@ -5,13 +5,14 @@
 // outline doesn't affect size, border does
 // transition requires correct (same) both start and end css rules
 
-.ruc-highlight-comment > div[slot='comment'] {
+// matches content selectors in constants/selectors.ts.getContentSelectorFromId()
+.ruc-highlight-comment [id$='-comment-rtjson-content'] {
   @apply bg-red-100;
   @apply outline-1 outline outline-red-300;
   @apply transition-none;
 }
 
-.ruc-highlight-comment-read > div[slot='comment'] {
+.ruc-highlight-comment-read [id$='-comment-rtjson-content'] {
   @apply bg-transparent outline-transparent;
   @apply transition duration-1000 ease-linear;
   @apply hover:bg-red-100 hover:transition-none;
